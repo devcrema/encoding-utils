@@ -18,12 +18,20 @@
 import sys
 import pyperclip
 import base64
+from hashlib import sha256
+
 
 def utf8_decode(str): # utf8 str -> bytes
     return str.encode('utf-8')
 
 def utf8_encode(bytes): # bytes -> utf8 str
-    return bytes.decode('utf-8')
+    return bytes.decode('utf-8', 'ignore')
+
+def euc_kr_decode(str): # euc-kr str -> bytes
+    return str.encode('euc-kr')
+
+def euc_kr_encode(bytes): # bytes -> euc-kr str
+    return bytes.decode('euc-kr', 'ignore')
 
 def base64_decode(str): # base64 str -> plain bytes
     return base64.b64decode(str)
@@ -31,12 +39,28 @@ def base64_decode(str): # base64 str -> plain bytes
 def base64_encode(bytes): # plain bytes -> base64 str
     return base64.b64encode(bytes).decode('ascii')
 
+def hex_decode(str): # hex str -> bytes
+    return bytes.fromhex(str)
+
+def hex_encode(bytes): # bytes -> hex str
+    return bytes.hex()
+
+def sha256_decode(str): # sha 256 hex str -> bytes
+    raise Exception("sha256 can not decode!!")
+
+def sha256_encode(bytes): # bytes -> sha256 hex
+    return sha256(bytes).hexdigest()
+
 encode_func = {
+    'text': (utf8_decode, utf8_encode),
     'utf8': (utf8_decode, utf8_encode),
+    'euckr': (euc_kr_decode, euc_kr_encode),
     'base64': (base64_decode, base64_encode),
     'hex': (hex_decode, hex_encode),
+    'sha256': (sha256_decode, sha256_encode),
 }
 
+# 모든 bytes의 기준은 unicode
 if __name__ == '__main__':
     current = sys.argv[1].lower().replace("-", "") # 기존
     if not current:
