@@ -44,10 +44,16 @@ def euc_kr_encode(bytes): # bytes -> euc-kr str
     return bytes.decode('euc-kr', 'ignore')
 
 def base64_decode(str): # base64 str -> plain bytes
-    return base64.b64decode(str)
+    return base64.b64decode(str + "==")
 
 def base64_encode(bytes): # plain bytes -> base64 str
     return base64.b64encode(bytes).decode('ascii')
+
+def base64_url_decode(str): # base64 str -> plain bytes
+    return base64.urlsafe_b64decode(str + "==") # python에서 알아서 == 제거해줌
+
+def base64_url_encode(bytes): # plain bytes -> base64 str
+    return base64.urlsafe_b64encode(bytes).decode('ascii')
 
 def hex_decode(str): # hex str -> bytes
     return bytes.fromhex(str)
@@ -66,6 +72,7 @@ encode_func = {
     'utf8': (utf8_decode, utf8_encode),
     'euckr': (euc_kr_decode, euc_kr_encode),
     'base64': (base64_decode, base64_encode),
+    'base64url': (base64_url_decode, base64_url_encode),
     'hex': (hex_decode, hex_encode),
     'sha256': (sha256_decode, sha256_encode),
 }
@@ -84,3 +91,4 @@ if __name__ == '__main__':
     # 클립보드에 다시 넣기
     pyperclip.copy(result)
     print("변환 완료!" + current + " -> " + next + " : " + result)
+    print("클립보드에 복사됨!")
