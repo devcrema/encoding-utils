@@ -19,7 +19,6 @@ import subprocess
 import sys
 import pkg_resources
 
-
 required = {'pyperclip', 'chardet'}
 installed = {pkg.key for pkg in pkg_resources.working_set}
 missing = required - installed
@@ -66,7 +65,8 @@ detect_func = {
 if __name__ == '__main__':
     target = pyperclip.paste() # 클립보드에서 텍스트 가져오기
     print("[" + target + "]")
-    print("length: " + len(target).__str__())
+    length = len(target)
+    print("length: " + length.__str__() + ", " + (length / 1024).__str__() + "k")
     for k, v in detect_func.items():
         result = v(target)
         print(k + " : " + result)

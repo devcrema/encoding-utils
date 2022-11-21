@@ -56,7 +56,7 @@ def hex_encode(bytes): # bytes -> hex str
     return bytes.hex()
 
 def sha256_decode(str): # sha 256 hex str -> bytes
-    raise Exception("sha256 can not decode!!")
+    raise bytes.fromhex(str)
 
 def sha256_encode(bytes): # bytes -> sha256 hex
     return sha256(bytes).hexdigest()
