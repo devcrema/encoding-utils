@@ -15,10 +15,20 @@
 # @raycast.packageName encoding-utils
 # @raycast.argument1 { "type": "text", "placeholder": "current encoding", "percentEncoded": false, "secure": false, "optional": true }
 # @raycast.argument2 { "type": "text", "placeholder": "next encoding", "percentEncoded": false, "secure": false, "optional": true }
+import subprocess
 import sys
-import pyperclip
 import base64
 from hashlib import sha256
+import pkg_resources
+
+
+required = {'pyperclip'}
+installed = {pkg.key for pkg in pkg_resources.working_set}
+missing = required - installed
+if missing:
+    subprocess.check_call([sys.executable, '-m', 'pip', 'install', *missing], stdout=subprocess.DEVNULL)
+
+import pyperclip
 
 
 def utf8_decode(str): # utf8 str -> bytes

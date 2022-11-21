@@ -15,7 +15,17 @@
 # @raycast.packageName encoding-detect
 
 
+import subprocess
 import sys
+import pkg_resources
+
+
+required = {'pyperclip', 'chardet'}
+installed = {pkg.key for pkg in pkg_resources.working_set}
+missing = required - installed
+if missing:
+    subprocess.check_call([sys.executable, '-m', 'pip', 'install', *missing], stdout=subprocess.DEVNULL)
+
 import pyperclip
 import chardet
 
@@ -46,12 +56,17 @@ detect_func = {
     # 'base64': utf8_detect,
     # 'hex': utf8_detect,
     # 'sha-256': utf8_detect,
+    # pkcs7
+    # pkcs1
+    # pkcs10
+    # x509
 }
 
 # 모든 bytes의 기준은 unicode
 if __name__ == '__main__':
     target = pyperclip.paste() # 클립보드에서 텍스트 가져오기
     print("[" + target + "]")
+    print("length: " + len(target).__str__())
     for k, v in detect_func.items():
         result = v(target)
         print(k + " : " + result)
