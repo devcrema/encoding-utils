@@ -15,6 +15,7 @@
 # @raycast.packageName encoding-detect
 
 
+import base64
 import subprocess
 import sys
 import pkg_resources
@@ -46,15 +47,48 @@ def euc_kr_detect(str):
     match = result['encoding'].lower() == 'euc-kr'
     return make_result_text(match, result['confidence'] * 100, len(bytes))
 
-# TODO str hex, base64 decode해보고 에러나는지 확인
-# TODO str을 hex, base64 decode해서 sha256, md5 등등 각각 길이 맞는지 점검하기
+
+def base64_detect(str):
+    try:
+        bytes = base64.b64decode(str + "==")
+        return make_result_text(True, 100, len(bytes))
+    except:
+        return make_result_text(False, 0, 0)
+
+def hex_detect(str):
+    try:
+        bytes = bytes.fromhex(str)
+        return make_result_text(True, 100, len(bytes))
+    except:
+        return make_result_text(False, 0, 0)
+
+# base64 or hex encoded sha256
+def sha256_detect(str):
+    try:
+        bytes = bytes.fromhex(str)
+        confidence = 0
+        if len(bytes) == 32:
+            confidence = 100
+        print("hex sha256")
+        return make_result_text(True, confidence, len(bytes))
+    except:
+        try:
+            bytes = base64.b64decode(str + "==")
+            confidence = 0
+            if len(bytes) == 32:
+                confidence = 100
+            print("base64 sha256")
+            return make_result_text(True, confidence, len(bytes))
+        except:
+            return make_result_text(False, 0, 0)
+
 
 detect_func = {
     'utf-8': utf8_detect,
     'euc-kr': euc_kr_detect,
-    # 'base64': utf8_detect,
-    # 'hex': utf8_detect,
-    # 'sha-256': utf8_detect,
+    'base64': base64_detect,
+    'hex': hex_detect,
+    'sha-256': sha256_detect,
     # pkcs7
     # pkcs1
     # pkcs10
