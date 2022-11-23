@@ -90,5 +90,6 @@ if __name__ == '__main__':
     result = encode_func[next][1](bytes) # 변환 함수 dict에서 bytes에서 대상인코딩으로 변환
     # 클립보드에 다시 넣기
     pyperclip.copy(result)
-    print("변환 완료!" + current + " -> " + next + " : " + result)
+    print(result)
+    print(f'변환 완료! [{current}][{len(bytes)} bytes] -> [{next}][{len(result)} length]')
     print("클립보드에 복사됨!")
