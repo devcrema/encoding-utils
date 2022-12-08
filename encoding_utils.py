@@ -19,6 +19,7 @@ import subprocess
 import sys
 import base64
 from hashlib import sha256
+import urllib
 import pkg_resources
 
 
@@ -67,6 +68,12 @@ def sha256_decode(str): # sha 256 hex str -> bytes
 def sha256_encode(bytes): # bytes -> sha256 hex
     return sha256(bytes).hexdigest()
 
+def url_decode(str): # url str -> bytes
+    return urllib.parse.unquote(str).encode('utf-8')
+
+def url_encode(bytes): # bytes -> url encode str
+    return urllib.parse.quote(bytes.decode('utf-8', 'ignore'))
+
 encode_func = {
     'text': (utf8_decode, utf8_encode),
     'utf8': (utf8_decode, utf8_encode),
@@ -75,6 +82,7 @@ encode_func = {
     'base64url': (base64_url_decode, base64_url_encode),
     'hex': (hex_decode, hex_encode),
     'sha256': (sha256_decode, sha256_encode),
+    'url': (url_decode, url_encode)
 }
 
 # 모든 bytes의 기준은 unicode
