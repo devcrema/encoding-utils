@@ -20,6 +20,7 @@ import subprocess
 import sys
 import pkg_resources
 import secrets
+import base64
 
 required = {'pyperclip'}
 installed = {pkg.key for pkg in pkg_resources.working_set}
@@ -44,7 +45,8 @@ def rand_string(size):
     return result
 
 def secret_token(size):
-    return secrets.token_urlsafe(size)
+    secret_bytes = secrets.token_bytes(size)
+    return base64.b64encode(secret_bytes).decode(‘ascii’)
 
 
 encode_func = {
