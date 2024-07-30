@@ -1,31 +1,4 @@
-#!/usr/bin/env python3
-
-# Raycast Script Command Template
-#
-# Duplicate this file and remove ".template." from the filename to get started.
-# See full documentation here: https://github.com/raycast/script-commands
-#
-# Required parameters:
-# @raycast.schemaVersion 1
-# @raycast.title encoding-detect
-# @raycast.mode fullOutput
-#
-# Optional parameters:
-# @raycast.icon 📝
-# @raycast.packageName encoding-detect
-
-
 import base64
-import subprocess
-import sys
-import pkg_resources
-
-required = {'pyperclip', 'chardet'}
-installed = {pkg.key for pkg in pkg_resources.working_set}
-missing = required - installed
-if missing:
-    subprocess.check_call([sys.executable, '-m', 'pip', 'install', *missing], stdout=subprocess.DEVNULL)
-
 import pyperclip
 import chardet
 

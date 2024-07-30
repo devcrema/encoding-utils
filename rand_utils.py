@@ -1,33 +1,7 @@
-#!/usr/bin/env python3
-
-# Raycast Script Command Template
-#
-# Duplicate this file and remove ".template." from the filename to get started.
-# See full documentation here: https://github.com/raycast/script-commands
-#
-# Required parameters:
-# @raycast.schemaVersion 1
-# @raycast.title rand-utils
-# @raycast.mode fullOutput
-#
-# Optional parameters:
-# @raycast.icon 📝
-# @raycast.packageName encoding-utils
-# @raycast.argument1 { "type": "text", "placeholder": "rand, randstr, secret", "percentEncoded": false, "secure": false, "optional": true }
-# @raycast.argument2 { "type": "text", "placeholder": "size", "percentEncoded": false, "secure": false, "optional": true }
 import string
-import subprocess
 import sys
-import pkg_resources
 import secrets
 import base64
-
-required = {'pyperclip'}
-installed = {pkg.key for pkg in pkg_resources.working_set}
-missing = required - installed
-if missing:
-    subprocess.check_call([sys.executable, '-m', 'pip', 'install', *missing], stdout=subprocess.DEVNULL)
-
 import pyperclip
 
 
@@ -46,7 +20,7 @@ def rand_string(size):
 
 def secret_token(size):
     secret_bytes = secrets.token_bytes(size)
-    return base64.b64encode(secret_bytes).decode(‘ascii’)
+    return base64.b64encode(secret_bytes).decode('ascii')
 
 
 encode_func = {
