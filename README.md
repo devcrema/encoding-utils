@@ -1,2 +1,2 @@
-# encoding-utils
-encoding python script for raycast
+# script-utils
+python script for raycast
